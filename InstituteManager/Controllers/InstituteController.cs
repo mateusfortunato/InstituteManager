@@ -27,15 +27,20 @@ namespace InstituteManager.Controllers
                     InstituteID = 3,
                     Name = "UniRS",
                     Adress = "Rio Grande do Sul"
+                },
+
+                new Institute()
+                {
+                    InstituteID = 4,
+                    Name = "UniRJ",
+                    Adress = "Rio de Janeiro"
                 }
             };
-            
-
             
         //Action called Index
         public IActionResult Index()
         {
-            return View();
+            return View(institutes);
         }
         
     }

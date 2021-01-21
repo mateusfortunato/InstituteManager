@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<InstituteManager.Models.Institute>
+
 @{
     Layout = null;
 }
@@ -15,7 +16,20 @@
     <a asp-action="Create"> Create new </a>
 </p>
 <table class="table">
-
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InstituteID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 <tbody>
         @foreach (var item in Model) {
             <tr>

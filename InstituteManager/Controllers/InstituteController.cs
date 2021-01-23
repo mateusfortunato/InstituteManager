@@ -43,5 +43,10 @@ namespace InstituteManager.Controllers
             return View(institutes);
         }
         
+        //GET: Create
+        public ActionResult Create()
+        {
+            return View();
+        }
     }
 }

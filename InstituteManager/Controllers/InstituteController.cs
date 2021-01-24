@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using InstituteManager.Models;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using InstituteManager.Models;
 
 namespace InstituteManager.Controllers
 {
@@ -43,10 +44,19 @@ namespace InstituteManager.Controllers
             return View(institutes);
         }
         
-        //GET: Create
-        public ActionResult Create()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Institute institute)
         {
-            return View();
+            institutes.Add(institute);
+            institute.InstituteID = institutes.Select(s => s.InstituteID).Max() + 1;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Edit(long id)
+        {
+            return View(institutes.Where(w => w.InstituteID == id).First());
         }
     }
 }

@@ -34,17 +34,19 @@
         @foreach (var item in Model) {
             <tr>
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.InstituteID)
+                    @item.InstituteID
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.Name)
+                    @item.Name
                 </td>
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.Adress)
+                    @item.Adress
                 </td>
                 <td>
-                    <a	asp-action="Edit" asp-route-id="@item.InstituteID"> Edit </a> |
-                    <a	asp-action="Details" asp-route-id="@item.InstituteID"> Details </a> |
+                    <a	asp-action="Edit" asp-route-id="@item.InstituteID"> Edit </a> 
+                    |
+                    <a	asp-action="Details" asp-route-id="@item.InstituteID"> Details </a> 
+                    |
                     <a	asp-action="Delete" asp-route-id="@item.InstituteID"> Delete </a>
                 </td>
             </tr>

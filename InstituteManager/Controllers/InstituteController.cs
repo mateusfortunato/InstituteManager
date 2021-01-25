@@ -54,9 +54,13 @@ namespace InstituteManager.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(long id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Institute institute)
         {
-            return View(institutes.Where(w => w.InstituteID == id).First());
+            institutes.Remove(institutes.Where(i	=>	i.InstituteID == institute.InstituteID).First());
+		    institutes.Add(institute);
+			return RedirectToAction("Index");
         }
     }
 }

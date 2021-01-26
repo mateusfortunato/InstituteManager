@@ -58,8 +58,12 @@ namespace InstituteManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Institute institute)
         {
-            institutes.Remove(institutes.Where(i	=>	i.InstituteID == institute.InstituteID).First());
-		    institutes.Add(institute);
+            if(institute != null)
+            {
+                institutes.Remove(institutes.Where(i =>	i.InstituteID == institute.InstituteID).First());
+		        institutes.Add(institute);
+            }
+
 			return RedirectToAction("Index");
         }
     }

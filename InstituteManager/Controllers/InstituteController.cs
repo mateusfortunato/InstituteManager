@@ -66,5 +66,11 @@ namespace InstituteManager.Controllers
 
 			return RedirectToAction("Index");
         }
+
+        [HttpDelete]
+        public ActionResult Delete(long id)
+        {
+            return View(institutes.Where(w => w.InstituteID == id).First());
+        }
     }
 }

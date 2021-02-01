@@ -60,17 +60,19 @@ namespace InstituteManager.Controllers
         {
             if(institute != null)
             {
-                institutes.Remove(institutes.Where(i =>	i.InstituteID == institute.InstituteID).First());
+                institutes.Remove(institutes.Where(w =>	w.InstituteID == institute.InstituteID).First());
 		        institutes.Add(institute);
             }
 
 			return RedirectToAction("Index");
         }
 
-        [HttpDelete]
-        public ActionResult Delete(long id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Institute institute)
         {
-            return View(institutes.Where(w => w.InstituteID == id).First());
+            institutes.Remove(institutes.Where(w => w.InstituteID == institute.InstituteID).First());
+            return RedirectToAction("Index");
         }
     }
 }

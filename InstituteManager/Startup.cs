@@ -26,7 +26,8 @@ namespace InstituteManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<IMContext>(options => options.UseSqlServer
-            (Configuration.GetConnectionString("I-Will-Add-Later")));
+            (Configuration.GetConnectionString("IMConnection")));
+            
             services.AddControllersWithViews();
         }
 

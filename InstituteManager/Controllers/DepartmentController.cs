@@ -37,7 +37,9 @@ namespace InstituteManager.Controllers
                 if(ModelState.IsValid)
                 {
                     _context.Add(department);
+                    
                     await _context.SaveChangesAsync();
+                    
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -65,6 +67,46 @@ namespace InstituteManager.Controllers
             }
 
             return View(department);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(long? id, [Bind("Department,Name")] Department department)
+        {
+            if(id != department.DepartmentID)
+            {
+                return NotFound();
+            }
+
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(department);
+
+                    await _context.SaveChangesAsync();
+                }
+                catch(DbUpdateConcurrencyException)
+                {
+                    if(!DepartmentExists(department.DepartmentID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(department);
+        }
+
+        private bool DepartmentExists(long? id)
+        {
+            return _context.Departments.Any(a => a.DepartmentID == id);
         }
     }
 }

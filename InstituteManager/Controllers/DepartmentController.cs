@@ -104,6 +104,23 @@ namespace InstituteManager.Controllers
             return View(department);
         }
 
+        public async Task<ActionResult> Details(long? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var department = await _context.Departments.FirstOrDefaultAsync(f => f.DepartmentID == id);
+            
+            if(department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
+        }
+
         private bool DepartmentExists(long? id)
         {
             return _context.Departments.Any(a => a.DepartmentID == id);

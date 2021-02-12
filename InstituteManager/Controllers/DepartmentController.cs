@@ -121,6 +121,38 @@ namespace InstituteManager.Controllers
             return View(department);
         }
 
+        // GET: Department/Delete/5
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var department = await _context.Departments.SingleOrDefaultAsync(s => s.DepartmentID == id);
+
+            if(department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
+        }
+
+        // POST: Department/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long? id)
+        {
+            var department = await _context.Departments.SingleOrDefaultAsync(s =>
+            s.DepartmentID == id);
+
+            _context.Departments.Remove(department);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
         private bool DepartmentExists(long? id)
         {
             return _context.Departments.Any(a => a.DepartmentID == id);

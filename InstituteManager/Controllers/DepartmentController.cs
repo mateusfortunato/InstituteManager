@@ -13,7 +13,7 @@ namespace InstituteManager.Controllers
 
         public DepartmentController(IMContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public async Task<ActionResult> Index()
@@ -52,7 +52,7 @@ namespace InstituteManager.Controllers
         }
 
         // GET: Department/Edit/5
-        public async Task<IActionResult> Edit (long? id)
+        public async Task<IActionResult> Edit(long? id)
         {
             if(id == null)
             {
@@ -71,7 +71,7 @@ namespace InstituteManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long? id, [Bind("Department,Name")] Department department)
+        public async Task<IActionResult> Edit(long? id, [Bind("DepartmentID, Name")] Department department)
         {
             if(id != department.DepartmentID)
             {
@@ -104,6 +104,7 @@ namespace InstituteManager.Controllers
             return View(department);
         }
 
+        // GET: Department/Details/5
         public async Task<ActionResult> Details(long? id)
         {
             if(id == null)
@@ -153,6 +154,8 @@ namespace InstituteManager.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        
+        // Checks if the department already exists
         private bool DepartmentExists(long? id)
         {
             return _context.Departments.Any(a => a.DepartmentID == id);

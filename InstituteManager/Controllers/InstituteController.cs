@@ -2,11 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using InstituteManager.Models;
+using InstituteManager.Data;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace InstituteManager.Controllers
 {
     public class InstituteController : Controller
     {
+
+        private readonly IMContext _context;
+
+        public InstituteController(IMContext context)
+        {
+            _context = context;
+        }
+
         private static IList<Institute> institutes = new List<Institute>()
             {
                 new Institute() 
@@ -39,19 +50,39 @@ namespace InstituteManager.Controllers
             };
             
         //Action called Index
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(institutes);
+            return View(await _context.Institutes.OrderBy(
+            o => o.Name).ToListAsync());
         }
         
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Institute institute)
+        // GET: Institute
+        public ActionResult Create()
         {
-            institutes.Add(institute);
-            institute.InstituteID = institutes.Select(s => s.InstituteID).Max() + 1;
+            return View();
+        }
+        
+                [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Name")] Institute institute)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                {
+                    _context.Add(institute);
+                    
+                    await _context.SaveChangesAsync();
+                    
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch(DbUpdateException)
+            {
+                ModelState.AddModelError("", "Was not possible insert the data");
+            }
 
-            return RedirectToAction("Index");
+            return View(institute);
         }
 
         [HttpPost]

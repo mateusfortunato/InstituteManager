@@ -62,9 +62,9 @@ namespace InstituteManager.Controllers
             return View();
         }
         
-                [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name")] Institute institute)
+        public async Task<IActionResult> Create([Bind("Name, Adress")] Institute institute)
         {
             try
             {
@@ -85,25 +85,113 @@ namespace InstituteManager.Controllers
             return View(institute);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Institute institute)
+        // GET: Institute/Details/5
+        public async Task<ActionResult> Details(long? id)
         {
-            if(institute != null)
+            if(id == null)
             {
-                institutes.Remove(institutes.Where(w =>	w.InstituteID == institute.InstituteID).First());
-		        institutes.Add(institute);
+                return NotFound();
             }
 
-			return RedirectToAction("Index");
+            var institute = await _context.Institutes.FirstOrDefaultAsync(f => f.InstituteID == id);
+            
+            if(institute == null)
+            {
+                return NotFound();
+            }
+
+            return View(institute);
+        }
+
+        // GET: Institute/Edit/5
+        public async Task<IActionResult> Edit(long? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var department = await _context.Institutes.SingleOrDefaultAsync(s => s.InstituteID == id);
+
+            if(department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Institute institute)
+        public async Task<IActionResult> Edit(long? id, [Bind("InstituteID,Name,Adress")] Institute institute)
         {
-            institutes.Remove(institutes.Where(w => w.InstituteID == institute.InstituteID).First());
-            return RedirectToAction("Index");
+            if(id != institute.InstituteID)
+            {
+                return NotFound();
+            }
+
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(institute);
+
+                    await _context.SaveChangesAsync();
+                }
+                catch(DbUpdateConcurrencyException)
+                {
+                    if(!InstituteExists(institute.InstituteID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(institute);
+        }
+
+        // GET: Department/Delete/5
+        public async Task<IActionResult> Delete(long? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var institute = await _context.Institutes.SingleOrDefaultAsync(s => s.InstituteID == id);
+
+            if(institute == null)
+            {
+                return NotFound();
+            }
+
+            return View(institute);
+        }
+
+        // POST: Institute/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long? id)
+        {
+            var institute = await _context.Institutes.SingleOrDefaultAsync(s =>
+            s.InstituteID == id);
+
+            _context.Institutes.Remove(institute);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool InstituteExists(long? id)
+        {
+            return _context.Institutes.Any(a => a.InstituteID == id);
         }
     }
 }

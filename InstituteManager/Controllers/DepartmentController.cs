@@ -71,7 +71,7 @@ namespace InstituteManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long? id, [Bind("DepartmentID, Name")] Department department)
+        public async Task<IActionResult> Edit(long? id, [Bind("DepartmentID,Name")] Department department)
         {
             if(id != department.DepartmentID)
             {
